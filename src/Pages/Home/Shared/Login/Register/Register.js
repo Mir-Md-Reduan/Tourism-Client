@@ -1,9 +1,31 @@
 import React from 'react';
 import './Register.css';
 import useAuth from '../../../../../Hooks/useAuth';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const Register = () => {
-    const { handleEmailChange, handlePasswordChange, handleUserRegister } = useAuth();
+    const { handleEmailChange, handlePasswordChange, handleUserRegister, setIsLoading, setUser } = useAuth();
+
+    const history = useHistory()
+    const location = useLocation()
+    const url = location.state?.from || "/home"
+
+    const handleRegistration = (e) => {
+        e.preventDefault();
+        handleUserRegister(handleEmailChange, handlePasswordChange)
+            .then((res) => {
+                setIsLoading(true)
+                setUser(res.user)
+                history.push(url)
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                // ..
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
     return (
         <div>
             <div className="login-box d-flex align-items-center justify-content-center my-5 py-3">
@@ -11,7 +33,7 @@ const Register = () => {
                     <div className="login-box">
                         <h2 className="text-success">Please Register</h2>
                         <br />
-                        <form onSubmit={handleUserRegister} >
+                        <form onSubmit={handleRegistration} >
                             <input
                                 onChange={handleEmailChange}
                                 className="input-felid"

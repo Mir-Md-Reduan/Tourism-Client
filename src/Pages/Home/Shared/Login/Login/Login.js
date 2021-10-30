@@ -1,12 +1,50 @@
 import { Button } from 'react-bootstrap';
 import useAuth from '../../../../../Hooks/useAuth';
-import './Login.css'
+import './Login.css';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 
 const Login = () => {
 
-    const { signInUsingGoogle, user,
-        handleUserLogin, signInUsingGithub, handleEmailChange, handlePasswordChange } = useAuth();
+    const { signInUsingGoogle, setUser, setIsLoading, handleEmailChange, handlePasswordChange, user, handleUserLogin } = useAuth();
+
+    const history = useHistory();
+    const location = useLocation();
+
+    const url = location.state?.from || "/home";
+
+    const handleLoginWithEmailAndPassword = (e) => {
+        e.preventDefault();
+
+        handleUserLogin(handleEmailChange, handlePasswordChange)
+            .then((res) => {
+                setIsLoading(true)
+                setUser(res.user);
+                history.push(url)
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
+
+    const handleGoogleLogin = () => {
+        signInUsingGoogle()
+            .then((res) => {
+                setIsLoading(true)
+                setUser(res.user)
+                history.push(url)
+            }
+            )
+            .catch((err) => console.log(err))
+            .finally(() => {
+                setIsLoading(false)
+            })
+    };
 
     return (
         <div className="login-box d-flex align-items-center justify-content-center my-2 py-3">
@@ -14,7 +52,7 @@ const Login = () => {
                 <div className="login-box">
                     <h2 className="text-success">Please Login</h2>
                     <p className="text-danger">{user.error}</p>
-                    <form onSubmit={handleUserLogin}>
+                    <form onSubmit={handleLoginWithEmailAndPassword}>
                         <input
                             onChange={handleEmailChange}
                             className="input-felid"
@@ -44,7 +82,7 @@ const Login = () => {
 
                     </form>
                     <div className="d-flex flex-wrap me-1  ">
-                        <Button onClick={signInUsingGoogle} className="mt-2 mx-auto text-warning w-75 " >
+                        <Button onClick={handleGoogleLogin} className="mt-2 mx-auto text-warning w-75 " >
                             Login with Google
                         </Button>
                     </div>

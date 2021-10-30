@@ -5,7 +5,7 @@ import Place from '../Place/Place';
 const Places = () => {
     const [places, setPlaces] = useState([]);
     useEffect(() => {
-        fetch('./doctors.json')
+        fetch('http://localhost:5000/places')
             .then(res => res.json())
             .then(data => setPlaces(data))
     }, [])

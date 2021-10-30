@@ -12,15 +12,16 @@ const useFirebase = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const auth = getAuth();
+    const googleProvider = new GoogleAuthProvider();
 
     const signInUsingGoogle = () => {
-        setIsLoading(true);
-        const googleProvider = new GoogleAuthProvider();
-        signInWithPopup(auth, googleProvider)
-            .then(result => {
-                setUser(result.user);
-            })
-            .finally(() => setIsLoading(false));
+        // setIsLoading(true);
+
+        return signInWithPopup(auth, googleProvider)
+        // .then(result => {
+        //     setUser(result.user);
+        // })
+        // .finally(() => setIsLoading(false));
     }
 
 
@@ -49,37 +50,41 @@ const useFirebase = () => {
         }
     };
 
-    const handleUserRegister = (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((result) => {
-                setUser(result.user);
-            })
-            .finally(() => setIsLoading(false));
+    const handleUserRegister = (email, password) => {
+        // e.preventDefault();
+        // setIsLoading(true);
+        return createUserWithEmailAndPassword(auth, email, password)
+        // .then((result) => {
+        //     setUser(result.user);
+        // })
+        // .finally(() => setIsLoading(false));
     };
 
-    const handleUserLogin = (e) => {
-        e.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
-            .then((result) => {
-                setUser(result.user);
-            })
-            .catch((error) => setError(error.message))
+    const handleUserLogin = (email, password) => {
+        // e.preventDefault();
+        return signInWithEmailAndPassword(auth, email, password)
+        // .then((result) => {
+        //     setUser(result.user);
+        // })
+        // .catch((error) => setError(error.message))
     };
 
 
     const logOut = () => {
         setIsLoading(true);
         signOut(auth)
-            .then(() => { })
+            .then(() => {
+                setUser({})
+            })
             .finally(() => setIsLoading(false));
     }
 
 
     return {
         user,
+        setUser,
         isLoading,
+        setIsLoading,
         signInUsingGoogle,
         logOut,
         handleUserRegister,
@@ -89,6 +94,4 @@ const useFirebase = () => {
         handlePasswordChange
     }
 }
-
-
 export default useFirebase;

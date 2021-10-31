@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { Card, Col, Container, Row } from 'react-bootstrap';
+import useAuth from '../../../../Hooks/useAuth';
+import Place from '../../Place/Place';
 
 const Admin = () => {
+
+    const { isLoading } = useAuth();
+    const [dataF, setDataF] = useState([]);
+    useEffect(() => {
+        fetch('https://grim-asylum-43912.herokuapp.com/admin')
+            .then(res => res.json())
+            .then(dataF => setDataF(dataF))
+    }, [isLoading]);
 
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data)
-        axios.post('https://grim-asylum-43912.herokuapp.com/admin', data)
+        axios.post('https://grim-asylum-43912.herokuapp.com/addTourSpot', data)
             .then(res => {
                 if (res.data.insertedId) {
                     alert("added Successfully");
@@ -17,26 +27,25 @@ const Admin = () => {
             })
     };
     return (
-        <div>
+        <div className="my-5">
             <Container>
                 <Row>
                     <Col>
-                        <div className="left-side">
+                        <div className="left-side my-5">
                             <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={ExactData[0]?.img} />
-                                <Card.Body>
-                                    <Card.Title>Tour Spot Name : {ExactData[0]?.name}</Card.Title>
-                                    <Card.Text>
-                                        {ExactData[0]?.description}
-                                    </Card.Text>
-                                    <h3>Tour price per Person : ${ExactData[0]?.price} </h3>
-                                </Card.Body>
+                                <h2>List of All Booking Tourist Spot</h2>
+                                {
+                                    dataF.map(place => <Place
+                                        key={place._id}
+                                        place={place}></Place>)
+                                }
                             </Card>
                         </div>
                     </Col>
                     <Col>
-                        <div className="right-side">
+                        <div className="right-side my-5">
                             <div className="booking-details">
+                                <h4 className="my-5">Add Tourist Spot</h4>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <input {...register("name", { required: true, maxLength: 20 })} placeholder="name" />
                                     <textarea {...register("description")} placeholder="description" />

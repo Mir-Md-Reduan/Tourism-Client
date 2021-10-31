@@ -5,7 +5,7 @@ import Place from '../Place/Place';
 const Places = () => {
     const [places, setPlaces] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/places')
+        fetch('https://grim-asylum-43912.herokuapp.com/places')
             .then(res => res.json())
             .then(data => setPlaces(data))
     }, [])
@@ -16,7 +16,7 @@ const Places = () => {
                 <div className="row gy-3">
                     {
                         places.map(place => <Place
-                            key={place.key}
+                            key={place._id}
                             place={place}></Place>)
                     }
                 </div>

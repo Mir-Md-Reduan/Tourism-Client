@@ -10,7 +10,7 @@ const Booking = () => {
     const { user } = useAuth();
     const [dataF, setDataF] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:5000/places')
+        fetch('https://grim-asylum-43912.herokuapp.com/places')
             .then(res => res.json())
             .then(dataF => setDataF(dataF))
     }, []);
@@ -21,7 +21,7 @@ const Booking = () => {
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data)
-        axios.post('http://localhost:5000/booking', data)
+        axios.post('https://grim-asylum-43912.herokuapp.com/booking', data)
             .then(res => {
                 if (res.data.insertedId) {
                     alert("added Successfully");

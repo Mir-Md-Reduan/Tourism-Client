@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Place from '../Place/Place';
 
 
+
 const Places = () => {
     const [places, setPlaces] = useState([]);
+
     useEffect(() => {
         fetch('https://grim-asylum-43912.herokuapp.com/places')
             .then(res => res.json())

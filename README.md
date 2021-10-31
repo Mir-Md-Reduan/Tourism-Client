@@ -1,6 +1,6 @@
 # Make a Tourism Website
 
-Live Site link: https://assignment-10-firebase.web.app
+Live Site link: https://assignment-11-torism.web.app
 
 
 - Tourism Related Website

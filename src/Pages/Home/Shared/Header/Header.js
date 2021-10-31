@@ -20,14 +20,17 @@ const Header = () => {
                             <Nav.Link as={HashLink} className="header-link" to="/home#places">Places</Nav.Link>
                             <Nav.Link as={HashLink} className="header-link" to="/home#about">About</Nav.Link>
                             <Nav.Link as={HashLink} className="header-link" to="/home#contact">Contact</Nav.Link>
+                            <Nav.Link as={HashLink}
+                                className="header-link" to="/admin">Admin</Nav.Link>
+                            <Nav.Link as={HashLink}
+                                className="header-link" to="/myOrders">My Orders</Nav.Link>
+                            <Navbar.Text>
+                                <a href="#login">{user?.displayName}</a>
+                            </Navbar.Text>
                             {
                                 user?.email ?
                                     <Button onClick={logOut} variant="light">LogOut</Button> :
                                     <Nav.Link as={Link} to="/login">Login</Nav.Link>}
-                            <Nav.Link as={HashLink} className="header-link" to="/admin">Admin</Nav.Link>
-                            <Navbar.Text>
-                                <a href="#login">{user?.displayName}</a>
-                            </Navbar.Text>
 
                         </Nav>
                     </Navbar.Collapse>

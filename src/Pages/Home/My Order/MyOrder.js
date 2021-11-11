@@ -9,13 +9,13 @@ const MyOrder = () => {
     const email = user.email;
 
     useEffect(() => {
-        fetch(`http://localhost:5000/myOrders/${email}`)
+        fetch(`https://grim-asylum-43912.herokuapp.com/${email}`)
             .then((res) => res.json())
             .then((data) => setBooking(data));
     }, [control]);
     console.log(booking);
     const handleDelete = (id) => {
-        fetch(`http://localhost:5000/delteOrder/${id}`, {
+        fetch(`https://grim-asylum-43912.herokuapp.com/${id}`, {
             method: "DELETE",
         })
             .then((res) => res.json())

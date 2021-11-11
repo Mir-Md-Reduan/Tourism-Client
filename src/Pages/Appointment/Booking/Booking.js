@@ -13,7 +13,7 @@ const Booking = () => {
     const email = user.email;
     const status = "pending";
     useEffect(() => {
-        fetch(`http://localhost:5000/singleplace/${bookingId}`)
+        fetch(`https://grim-asylum-43912.herokuapp.com/singleplace/${bookingId}`)
             .then(res => res.json())
             .then(dataF => setDataF(dataF))
     }, [isLoading]);
@@ -26,7 +26,7 @@ const Booking = () => {
         data.email = email;
         data.status = status;
         console.log(data)
-        fetch('http://localhost:5000/booking', {
+        fetch('https://grim-asylum-43912.herokuapp.com/booking', {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(data),

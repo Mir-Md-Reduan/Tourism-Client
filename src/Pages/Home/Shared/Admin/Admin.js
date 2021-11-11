@@ -15,7 +15,7 @@ const Admin = () => {
 
 
     const handleUpdate = (id) => {
-        fetch(`http://localhost:5000/updateStatus/${id}`, {
+        fetch(`https://grim-asylum-43912.herokuapp.com/${id}`, {
             method: "PUT",
             headers: { "content-type": "application/json" },
             body: JSON.stringify({ status }),
@@ -24,7 +24,7 @@ const Admin = () => {
         console.log(id);
     };
     useEffect(() => {
-        fetch('http://localhost:5000/allOrders')
+        fetch('https://grim-asylum-43912.herokuapp.com/allOrders')
             .then(res => res.json())
             .then(data => setDataF(data))
     }, [control]);
@@ -32,14 +32,14 @@ const Admin = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:5000/places')
+        fetch('https://grim-asylum-43912.herokuapp.com/places')
             .then(res => res.json())
             .then(dataF => setPlaces(dataF))
     }, [control]);
     console.log(places);
 
     const handleDelete = (id) => {
-        fetch(`http://localhost:5000/delteOrder/${id}`, {
+        fetch(`https://grim-asylum-43912.herokuapp.com/delteOrder/${id}`, {
             method: "DELETE",
         })
             .then((res) => res.json())
@@ -55,7 +55,7 @@ const Admin = () => {
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data)
-        fetch('http://localhost:5000/addTourSpot', {
+        fetch('https://grim-asylum-43912.herokuapp.com/addTourSpot', {
 
             method: "POST",
             headers: { "content-type": "application/json" },

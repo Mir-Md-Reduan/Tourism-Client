@@ -7,24 +7,32 @@ import Place from '../../Place/Place';
 
 const Admin = () => {
 
-    const { isLoading } = useAuth();
-    const [dataF, setDataF] = useState([]);
-    useEffect(() => {
-        fetch('https://grim-asylum-43912.herokuapp.com/admin')
-            .then(res => res.json())
-            .then(dataF => setDataF(dataF))
-    }, [isLoading]);
+    // const { isLoading } = useAuth();
+    // const [dataF, setDataF] = useState([]);
+    // useEffect(() => {
+    //     fetch('https://grim-asylum-43912.herokuapp.com/admin')
+    //         .then(res => res.json())
+    //         .then(dataF => setDataF(dataF))
+    // }, [isLoading]);
 
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data)
-        axios.post('https://grim-asylum-43912.herokuapp.com/addTourSpot', data)
-            .then(res => {
-                if (res.data.insertedId) {
-                    alert("added Successfully");
-                    reset();
-                }
-            })
+        fetch('http://localhost:5000/addTourSpot', {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(data),
+        })
+            .then((res) => res.json())
+            .then((result) => console.log(result));
+        console.log(data);
+        // })
+        //         .then(res => {
+        //     if (res.data.insertedId) {
+        //         alert("added Successfully");
+        //         reset();
+        //     }
+        // })
     };
     return (
         <div className="my-5">
@@ -34,11 +42,11 @@ const Admin = () => {
                         <div className="left-side my-5">
                             <Card style={{ width: '18rem' }}>
                                 <h2>List of All Booking Tourist Spot</h2>
-                                {
+                                {/* {
                                     dataF.map(place => <Place
                                         key={place._id}
                                         place={place}></Place>)
-                                }
+                                } */}
                             </Card>
                         </div>
                     </Col>

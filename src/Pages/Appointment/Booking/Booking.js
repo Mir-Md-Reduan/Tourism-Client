@@ -10,25 +10,27 @@ const Booking = () => {
     const { bookingId } = useParams();
     const { user, isLoading } = useAuth();
     const [dataF, setDataF] = useState([]);
+    const email = user.email;
     useEffect(() => {
-        fetch('https://grim-asylum-43912.herokuapp.com/places')
+        fetch(`http://localhost:5000/singleplace/${bookingId}`)
             .then(res => res.json())
             .then(dataF => setDataF(dataF))
     }, [isLoading]);
 
-    const ExactData = dataF.filter(dat => dat._id === bookingId);
-    // console.log(ExactData[0].name);
 
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data)
-        axios.post('https://grim-asylum-43912.herokuapp.com/booking', data)
-            .then(res => {
-                if (res.data.insertedId) {
-                    alert("added Successfully");
-                    reset();
-                }
-            })
+        data.email = email;
+        fetch('http://localhost:5000/booking', {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(data),
+        })
+            .then((res) => res.json())
+            .then((result) => console.log(result));
+        alert('booking is successful');
+
     };
 
     return (
@@ -39,13 +41,13 @@ const Booking = () => {
                     <Col>
                         <div className="left-side">
                             <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={ExactData[0]?.img} />
+                                <Card.Img variant="top" src={dataF?.img} />
                                 <Card.Body>
-                                    <Card.Title>Tour Spot Name : {ExactData[0]?.name}</Card.Title>
+                                    <Card.Title>Tour Spot Name : {dataF?.name}</Card.Title>
                                     <Card.Text>
-                                        {ExactData[0]?.description}
+                                        {dataF?.description}
                                     </Card.Text>
-                                    <h3>Tour price per Person : ${ExactData[0]?.price} </h3>
+                                    <h3>Tour price per Person : ${dataF?.price} </h3>
                                 </Card.Body>
                             </Card>
                         </div>
@@ -54,11 +56,36 @@ const Booking = () => {
                         <div className="right-side">
                             <div className="booking-details">
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <input {...register("name", { required: true, maxLength: 20 })} placeholder="name" />
-                                    <textarea {...register("description")} placeholder="description" />
-                                    <input type="number" {...register("price")} placeholder="price" />
-                                    <input {...register("img")} placeholder="imag url" />
-                                    <input type="submit" />
+                                    <input {...register("name")}
+                                        value={dataF?.name}
+                                        className="p-2 m-2 w-75" />
+                                    <br />
+                                    <input
+                                        {...register("date")}
+                                        // placeholder="Name"
+                                        type="date"
+                                        className="p-2 m-2 w-75"
+                                    />
+                                    <br />
+                                    <input
+                                        {...register("comments")}
+                                        placeholder="comments"
+                                        className="p-2 m-2"
+                                        className="p-2 m-2 w-75"
+                                    />
+                                    <br />
+                                    <input
+                                        {...register("price")}
+                                        value={dataF?.price}
+                                        className="p-2 m-2"
+                                        className="p-2 m-2 w-75"
+                                    />
+                                    <br />
+                                    <input
+                                        type="submit"
+                                        value="Order Now"
+                                        className="btn btn-warning w-50"
+                                    />
                                 </form>
                             </div>
                         </div>

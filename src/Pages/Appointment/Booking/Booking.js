@@ -16,9 +16,10 @@ const Booking = () => {
             .then(res => res.json())
             .then(dataF => setDataF(dataF))
     }, [isLoading]);
+    console.log(dataF);
 
 
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit } = useForm();
     const onSubmit = data => {
         console.log(data)
         data.email = email;
@@ -56,13 +57,13 @@ const Booking = () => {
                         <div className="right-side">
                             <div className="booking-details">
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <input {...register("name")}
+                                    <input
+                                        {...register("Name", { required: true })}
                                         value={dataF?.name}
                                         className="p-2 m-2 w-75" />
                                     <br />
                                     <input
                                         {...register("date")}
-                                        // placeholder="Name"
                                         type="date"
                                         className="p-2 m-2 w-75"
                                     />
@@ -70,14 +71,18 @@ const Booking = () => {
                                     <input
                                         {...register("comments")}
                                         placeholder="comments"
-                                        className="p-2 m-2"
                                         className="p-2 m-2 w-75"
                                     />
                                     <br />
                                     <input
-                                        {...register("price")}
+                                        {...register("price", { required: true })}
                                         value={dataF?.price}
-                                        className="p-2 m-2"
+                                        className="p-2 m-2 w-75"
+                                    />
+                                    <br />
+                                    <input
+                                        {...register("image", { required: true })}
+                                        value={dataF?.img}
                                         className="p-2 m-2 w-75"
                                     />
                                     <br />

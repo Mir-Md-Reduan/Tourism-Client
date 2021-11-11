@@ -34,6 +34,7 @@ function App() {
             <PrivateRoute exact path='/myOrder'>
               <MyOrder></MyOrder>
             </PrivateRoute>
+
             <PrivateRoute exact path='/appointment/:bookingId'>
               <Booking></Booking>
             </PrivateRoute>

@@ -15,7 +15,7 @@ const Admin = () => {
 
 
     const handleUpdate = (id) => {
-        fetch(`https://grim-asylum-43912.herokuapp.com/${id}`, {
+        fetch(`https://grim-asylum-43912.herokuapp.com/updateStatus/${id}`, {
             method: "PUT",
             headers: { "content-type": "application/json" },
             body: JSON.stringify({ status }),

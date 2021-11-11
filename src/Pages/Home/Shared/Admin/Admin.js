@@ -1,24 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import axios from 'axios';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Card, Col, Container, Row, Button } from 'react-bootstrap';
 import useAuth from '../../../../Hooks/useAuth';
-import Place from '../../Place/Place';
+
 
 const Admin = () => {
 
-    // const { isLoading } = useAuth();
-    // const [dataF, setDataF] = useState([]);
-    // useEffect(() => {
-    //     fetch('https://grim-asylum-43912.herokuapp.com/admin')
-    //         .then(res => res.json())
-    //         .then(dataF => setDataF(dataF))
-    // }, [isLoading]);
+    const { isLoading } = useAuth();
+    const [dataF, setDataF] = useState([]);
+    const [places, setPlaces] = useState([]);
+    const [control, setControl] = useState(false);
+    const status = "approved";
+
+
+
+    const handleUpdate = (id) => {
+        fetch(`http://localhost:5000/updateStatus/${id}`, {
+            method: "PUT",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ status }),
+        });
+
+        console.log(id);
+    };
+    useEffect(() => {
+        fetch('http://localhost:5000/allOrders')
+            .then(res => res.json())
+            .then(data => setDataF(data))
+    }, [control]);
+
+
+
+    useEffect(() => {
+        fetch('http://localhost:5000/places')
+            .then(res => res.json())
+            .then(dataF => setPlaces(dataF))
+    }, [control]);
+    console.log(places);
+
+    const handleDelete = (id) => {
+        fetch(`http://localhost:5000/delteOrder/${id}`, {
+            method: "DELETE",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.deletedCount) {
+                    setControl(!control);
+                    alert('Booking Is Deleted Successfully');
+                }
+            });
+        console.log(id);
+    };
 
     const { register, handleSubmit, reset } = useForm();
     const onSubmit = data => {
         console.log(data)
         fetch('http://localhost:5000/addTourSpot', {
+
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify(data),
@@ -26,12 +64,11 @@ const Admin = () => {
             .then((res) => res.json())
             .then((result) => console.log(result));
         console.log(data);
+        alert('Tourist Spot added successfully');
+        reset();
         // })
         //         .then(res => {
-        //     if (res.data.insertedId) {
-        //         alert("added Successfully");
-        //         reset();
-        //     }
+
         // })
     };
     return (
@@ -42,14 +79,60 @@ const Admin = () => {
                         <div className="left-side my-5">
                             <Card style={{ width: '18rem' }}>
                                 <h2>List of All Booking Tourist Spot</h2>
-                                {/* {
-                                    dataF.map(place => <Place
-                                        key={place._id}
-                                        place={place}></Place>)
-                                } */}
+                                <div className="container">
+                                    <div className="row gy-3">
+                                        {
+
+                                            dataF?.map((pd) => (
+                                                <div className="col-md-12">
+                                                    <div className="service border border p-3">
+                                                        <div className="services-img ">
+                                                            <img className="w-100" src={pd?.image} alt="" />
+                                                        </div>
+
+                                                        <h6>{pd?.Name}</h6>
+                                                        <Button
+                                                            onClick={() => handleUpdate(pd._id)} >{pd?.status}</Button>
+                                                        <p>{pd?.email}</p>
+                                                        <h3 className="text-danger"> Cost :{pd?.price}$</h3>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
                             </Card>
                         </div>
                     </Col>
+                    <Col>
+                        <div className="left-side my-5">
+                            <Card style={{ width: '18rem' }}>
+                                <h2>List of All Tourist Spot</h2>
+                                <div className="container">
+                                    <div className="row gy-3">
+                                        {
+
+                                            places?.map((pd) => (
+                                                <div className="col-md-12">
+                                                    <div className="service border border p-3">
+                                                        <div className="services-img ">
+                                                            <img className="w-100" src={pd?.img} alt="" />
+                                                        </div>
+
+                                                        <h6>{pd?.name}</h6>
+                                                        <Button onClick={() => handleDelete(pd?._id)}>Delete</Button>
+                                                        <p>{pd?.email}</p>
+                                                        <h3 className="text-danger"> Cost :{pd?.price}$</h3>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            </Card>
+                        </div>
+                    </Col>
+
                     <Col>
                         <div className="right-side my-5">
                             <div className="booking-details">

@@ -11,6 +11,7 @@ const Booking = () => {
     const { user, isLoading } = useAuth();
     const [dataF, setDataF] = useState([]);
     const email = user.email;
+    const status = "pending";
     useEffect(() => {
         fetch(`http://localhost:5000/singleplace/${bookingId}`)
             .then(res => res.json())
@@ -21,8 +22,10 @@ const Booking = () => {
 
     const { register, handleSubmit } = useForm();
     const onSubmit = data => {
-        console.log(data)
+        data.status = "pending";
         data.email = email;
+        data.status = status;
+        console.log(data)
         fetch('http://localhost:5000/booking', {
             method: "POST",
             headers: { "content-type": "application/json" },
